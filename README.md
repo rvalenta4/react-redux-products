@@ -1,4 +1,4 @@
-# React Redux App
+# React Redux Products
 
 ## This application was built using
 
