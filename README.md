@@ -1,5 +1,10 @@
 # React Redux App
 
+## Version control system
+
+* GIT 2.21.0
+* App version: 0.7.0
+
 ## Info
 
 This CRUD application lists all available products in a datatable. These products can be edited and removed and new products can be added. The application state is persisted using Redux and Firebase is utilized as a simple backend/database. Formik is used instead of Redux Form in order to avoid updating the Redux state every time a user changes the input value.
