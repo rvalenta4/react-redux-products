@@ -1,5 +1,17 @@
 # React Redux App
 
+## This application was built using
+
+* React 16.8.6
+* Redux 4.0.1
+* Firebase
+* Redux Thunk 2.3.0
+* React Router 5.0.0
+* axios 0.18.0
+* Formik 1.5.2
+* Yup 0.27.0
+* Moment 2.24.0
+
 ## Version control system
 
 * GIT 2.21.0
