@@ -13,6 +13,8 @@ class UserList extends Component {
 
     render() {
 
+        //console.log(this.props.products)
+
         const keys = this.props.products ? Object.keys(this.props.products) : []
         const products = this.props.products ? Object.values(this.props.products) : []
 
@@ -73,7 +75,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getProducts: () => dispatch(getProducts()),
-        deleteProduct: (id) => dispatch(deleteProduct(id))
+        deleteProduct: id => dispatch(deleteProduct(id))
     }
 }
 

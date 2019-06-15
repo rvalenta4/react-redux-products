@@ -53,24 +53,28 @@ class ProductForm extends Component {
 
     componentDidMount() {
         const {id} = this.props.match.params
-        this.props.getProduct(id)
+        if(id) this.props.getProduct(id)
     }
 
   render() {
+
     const {id} = this.props.match.params
-    const {product} = this.props
+    const {
+        name, number, weight, packaging, availableSince, 
+        manufacturer, origin, pricingFrom, pricingTo, quantity
+    } = this.props.product
 
     const initialValues = {
-        name: product && product.name ? product.name : '',
-        number: product && product.number ? product.number : '',
-        weight: product && product.weight ? product.weight : '',
-        packaging: product && product.packaging ? product.packaging : '',
-        availableSince: product && product.availableSince ? product.availableSince : '',
-        manufacturer: product && product.manufacturer ? product.manufacturer : '',
-        origin: product && product.origin ? product.origin : '',
-        pricingFrom: product && product.pricingFrom ? product.pricingFrom : '',
-        pricingTo: product && product.pricingTo ? product.pricingTo : '',
-        quantity: product && product.quantity ? product.quantity : '',
+        name: id ? name : '',
+        number: id ? number : '',
+        weight: id ? weight : '',
+        packaging: id ? packaging : '',
+        availableSince: id ? availableSince : '',
+        manufacturer: id ? manufacturer : '',
+        origin: id ? origin : '',
+        pricingFrom: id ? pricingFrom : '',
+        pricingTo: id ? pricingTo : '',
+        quantity: id ? quantity : '',
     }
 
         return (
@@ -86,16 +90,14 @@ class ProductForm extends Component {
 
                             const {id} = this.props.match.params
 
-                            const request = !id
-                                ? this.props.postProduct(values) 
-                                : this.props.putProduct(id, values)
+                            const request = id
+                                ? this.props.putProduct(id, values)
+                                : this.props.postProduct(values) 
 
                             request
-                                .then(res => {
-                                    if(res) {
-                                        setSubmitting(false)
-                                        this.props.history.push("/")
-                                    }
+                                .then(() => {
+                                    setSubmitting(false)
+                                    this.props.history.push("/")
                                 }
                             )
                         }}

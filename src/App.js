@@ -1,7 +1,7 @@
-import React from 'react';
-import './App.css';
-import './components/DataTable';
-import DataTable from './components/DataTable';
+import React from 'react'
+import './App.css'
+import './components/DataTable'
+import DataTable from './components/DataTable'
 import ProductForm from './components/ProductForm'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 

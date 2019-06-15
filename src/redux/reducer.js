@@ -17,34 +17,37 @@ const initialState = {
 }
 
 const mainReducer = (state = initialState, action) => {
-    console.log(action.type)
     switch (action.type) {
         case GET_PRODUCTS_STARTED:
             return {
                 ...state,
-                getting: true,
+                getting: true
             }
         case GET_PRODUCTS_SUCCEEDED:
             return {
                 ...state,
                 products: action.payload,
-                getting: false,
+                getting: false
             }
         case GET_PRODUCTS_FAILED:
             return {
                 ...state,
                 error: action.payload,
-                getting: false,
+                getting: false
             }
         case POST_PRODUCT_STARTED:
             return {
                 ...state,
-                posting: true,
+                posting: true
             }
         case POST_PRODUCT_SUCCEEDED:
             return {
                 ...state,
-                posting: false,
+                products: {
+                    ...state.products, 
+                    [action.payload.id]: action.payload.product
+                },
+                posting: false
             }
         case POST_PRODUCT_FAILED:
             return {
@@ -55,12 +58,14 @@ const mainReducer = (state = initialState, action) => {
         case DELETE_PRODUCT_STARTED:
             return {
                 ...state,
-                deleting: true,
+                deleting: true
             }
         case DELETE_PRODUCT_SUCCEEDED:
+            const {[action.payload]: deleted, ...rest} = state.products
             return {
                 ...state,
-                deleting: false,
+                products: rest,
+                deleting: false
             }
         case DELETE_PRODUCT_FAILED:
             return {
@@ -71,13 +76,13 @@ const mainReducer = (state = initialState, action) => {
         case GET_PRODUCT_STARTED:
             return {
                 ...state,
-                getting: true,
+                getting: true
             }
         case GET_PRODUCT_SUCCEEDED:
             return {
                 ...state,
                 product: action.payload,
-                getting: false,
+                getting: false
             }
         case GET_PRODUCT_FAILED:
             return {
@@ -88,12 +93,16 @@ const mainReducer = (state = initialState, action) => {
         case PUT_PRODUCT_STARTED:
             return {
                 ...state,
-                putting: true,
+                putting: true
             }
         case PUT_PRODUCT_SUCCEEDED:
             return {
                 ...state,
-                putting: false,
+                products: {
+                    ...state.products, 
+                    [action.payload.id]: action.payload.product
+                },
+                putting: false
             }
         case PUT_PRODUCT_FAILED:
             return {
