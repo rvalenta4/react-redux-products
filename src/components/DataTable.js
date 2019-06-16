@@ -13,8 +13,6 @@ class UserList extends Component {
 
     render() {
 
-        //console.log(this.props.products)
-
         const keys = this.props.products ? Object.keys(this.props.products) : []
         const products = this.props.products ? Object.values(this.props.products) : []
 

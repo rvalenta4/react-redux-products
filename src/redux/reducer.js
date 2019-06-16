@@ -1,10 +1,12 @@
-import {GET_PRODUCTS_STARTED, 
-    GET_PRODUCTS_SUCCEEDED, GET_PRODUCTS_FAILED, 
-    POST_PRODUCT_STARTED, POST_PRODUCT_SUCCEEDED, 
-    POST_PRODUCT_FAILED, DELETE_PRODUCT_STARTED,
-    DELETE_PRODUCT_SUCCEEDED, DELETE_PRODUCT_FAILED,
+import {
+    GET_PRODUCTS_STARTED, GET_PRODUCTS_SUCCEEDED, GET_PRODUCTS_FAILED, 
+    POST_PRODUCT_STARTED, POST_PRODUCT_SUCCEEDED, POST_PRODUCT_FAILED, 
+    DELETE_PRODUCT_STARTED, DELETE_PRODUCT_SUCCEEDED, DELETE_PRODUCT_FAILED,
     GET_PRODUCT_STARTED, GET_PRODUCT_SUCCEEDED, GET_PRODUCT_FAILED,
-    PUT_PRODUCT_STARTED, PUT_PRODUCT_SUCCEEDED, PUT_PRODUCT_FAILED} from './constants'
+    PUT_PRODUCT_STARTED, PUT_PRODUCT_SUCCEEDED, PUT_PRODUCT_FAILED
+} from './constants'
+
+import produce from 'immer'
 
 const initialState = {
     products: {},
@@ -17,102 +19,67 @@ const initialState = {
 }
 
 const mainReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case GET_PRODUCTS_STARTED:
-            return {
-                ...state,
-                getting: true
-            }
-        case GET_PRODUCTS_SUCCEEDED:
-            return {
-                ...state,
-                products: action.payload,
-                getting: false
-            }
-        case GET_PRODUCTS_FAILED:
-            return {
-                ...state,
-                error: action.payload,
-                getting: false
-            }
-        case POST_PRODUCT_STARTED:
-            return {
-                ...state,
-                posting: true
-            }
-        case POST_PRODUCT_SUCCEEDED:
-            return {
-                ...state,
-                products: {
-                    ...state.products, 
-                    [action.payload.id]: action.payload.product
-                },
-                posting: false
-            }
-        case POST_PRODUCT_FAILED:
-            return {
-                ...state,
-                posting: false,
-                error: action.payload
-            }
-        case DELETE_PRODUCT_STARTED:
-            return {
-                ...state,
-                deleting: true
-            }
-        case DELETE_PRODUCT_SUCCEEDED:
-            const {[action.payload]: deleted, ...rest} = state.products
-            return {
-                ...state,
-                products: rest,
-                deleting: false
-            }
-        case DELETE_PRODUCT_FAILED:
-            return {
-                ...state,
-                deleting: false,
-                error: action.payload
-            }
-        case GET_PRODUCT_STARTED:
-            return {
-                ...state,
-                getting: true
-            }
-        case GET_PRODUCT_SUCCEEDED:
-            return {
-                ...state,
-                product: action.payload,
-                getting: false
-            }
-        case GET_PRODUCT_FAILED:
-            return {
-                ...state,
-                error: action.payload,
-                getting: false
-            }
-        case PUT_PRODUCT_STARTED:
-            return {
-                ...state,
-                putting: true
-            }
-        case PUT_PRODUCT_SUCCEEDED:
-            return {
-                ...state,
-                products: {
-                    ...state.products, 
-                    [action.payload.id]: action.payload.product
-                },
-                putting: false
-            }
-        case PUT_PRODUCT_FAILED:
-            return {
-                ...state,
-                putting: false,
-                error: action.payload
-            }
-        default:
-            return state
-    }
-  }
+    return produce(state, draft => {
+        switch(action.type) {
+            case GET_PRODUCTS_STARTED:
+                draft.getting = true
+                break
+            case GET_PRODUCTS_SUCCEEDED:
+                draft.products = action.payload
+                draft.getting = false
+                break
+            case GET_PRODUCTS_FAILED:
+                draft.error = action.payload
+                draft.getting = false
+                break
+            case POST_PRODUCT_STARTED:
+                draft.posting = true
+                break
+            case POST_PRODUCT_SUCCEEDED:
+                draft.products[action.payload.id] = action.payload.product
+                draft.posting = false
+                break
+            case POST_PRODUCT_FAILED:
+                draft.posting = false
+                draft.error = action.payload
+                break
+            case DELETE_PRODUCT_STARTED:
+                draft.deleting = true
+                break
+            case DELETE_PRODUCT_SUCCEEDED:
+                const {[action.payload]: deleted, ...rest} = state.products
+                draft.products = rest
+                draft.deleting = false
+                break
+            case DELETE_PRODUCT_FAILED:
+                draft.deleting = false
+                draft.error = action.payload
+                break
+            case GET_PRODUCT_STARTED:
+                draft.getting = true
+                break
+            case GET_PRODUCT_SUCCEEDED:
+                draft.product = action.payload
+                draft.getting = false
+                break
+            case GET_PRODUCT_FAILED:
+                draft.error = action.payload
+                draft.getting = false
+                break
+            case PUT_PRODUCT_STARTED:
+                draft.putting = true
+                break
+            case PUT_PRODUCT_SUCCEEDED:
+                draft.products[action.payload.id] = action.payload.product
+                draft.putting = false
+                break
+            case PUT_PRODUCT_FAILED:
+                draft.putting = false
+                draft.error = action.payload
+                break
+            default: break
+        }
+    })
+}
 
 export default mainReducer
