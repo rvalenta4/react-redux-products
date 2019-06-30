@@ -206,19 +206,15 @@ class ProductForm extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        getting: state.getting,
-        product: state.product
-    }
-}
+const mapStateToProps = state => ({
+    getting: state.getting,
+    product: state.product
+})
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getProduct: (id) => dispatch(getProduct(id)),
-        postProduct: (values) => dispatch(postProduct(values)),
-        putProduct: (id, values) => dispatch(putProduct(id, values)),
-    }
-}
+const mapDispatchToProps = dispatch => ({
+    getProduct: (id) => dispatch(getProduct(id)),
+    postProduct: (values) => dispatch(postProduct(values)),
+    putProduct: (id, values) => dispatch(putProduct(id, values)),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductForm)

@@ -63,18 +63,14 @@ class UserList extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        products: state.products,
-        getting: state.getting
-    }
-}
+const mapStateToProps = state => ({
+    products: state.products,
+    getting: state.getting
+})
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getProducts: () => dispatch(getProducts()),
-        deleteProduct: id => dispatch(deleteProduct(id))
-    }
-}
+const mapDispatchToProps = dispatch => ({
+    getProducts: () => dispatch(getProducts()),
+    deleteProduct: id => dispatch(deleteProduct(id))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList)

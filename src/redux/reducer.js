@@ -18,8 +18,8 @@ const initialState = {
     error: {}
 }
 
-const mainReducer = (state = initialState, action) => {
-    return produce(state, draft => {
+const mainReducer = (state = initialState, action) => (
+    produce(state, draft => {
         switch(action.type) {
             case GET_PRODUCTS_STARTED:
                 draft.getting = true
@@ -80,6 +80,6 @@ const mainReducer = (state = initialState, action) => {
             default: break
         }
     })
-}
+)
 
 export default mainReducer
