@@ -1,26 +1,42 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import './DataTable.css'
-import { getProducts, deleteProduct } from '../redux/actions'
 import { Link } from 'react-router-dom'
-import Moment from 'moment'
+import moment from 'moment'
+import { API } from '../api'
+import axios from 'axios'
+import {
+    GET_PRODUCTS_STARTED, GET_PRODUCTS_SUCCEEDED, GET_PRODUCTS_FAILED,
+    DELETE_PRODUCT_STARTED, DELETE_PRODUCT_SUCCEEDED, DELETE_PRODUCT_FAILED
+} from '../redux/constants'
 
-class UserList extends Component {
+const DataTable = () => {
+    const { products, getting } = useSelector(state => state)
+    const dispatch = useDispatch()
 
-    componentDidMount() {
-        this.props.getProducts()
+    useEffect(() => {
+        const getProducts = async () => {
+            dispatch({ type: GET_PRODUCTS_STARTED })
+            try {
+                const { data: products } = await axios.get(`${API}.json`)
+                dispatch({ type: GET_PRODUCTS_SUCCEEDED, products: products })
+            } catch (error) { dispatch({ type: GET_PRODUCTS_FAILED, error: error }) }
+        }
+        getProducts()
+    }, [dispatch])
+
+    const deleteProduct = async deleted => {
+        dispatch({ type: DELETE_PRODUCT_STARTED })
+        try {
+            await axios.delete(`${API}/${deleted}.json`)
+            dispatch({ type: DELETE_PRODUCT_SUCCEEDED, deleted: deleted })
+        } catch (error) { dispatch({ type: DELETE_PRODUCT_FAILED, error: error }) }
     }
 
-    render() {
-
-        const keys = this.props.products ? Object.keys(this.props.products) : []
-        const products = this.props.products ? Object.values(this.props.products) : []
-
-        return (
-            <div className="table">
-                <div className="table-title">List of available Products</div>
-
-                {!this.props.getting ?
+    return (
+        <div className="table">
+            <div className="table-title">List of available Products</div>
+            {!getting && Object.keys(products).length > 0 ?
                 <>
                     <div className="header">
                         <div className="header-column">Name</div>
@@ -31,46 +47,37 @@ class UserList extends Component {
                         <div className="header-column-wide">Pricing ($)</div>
                         <div className="header-column">Quantity (pc.)</div>
                     </div>
-
                     <div className="rows">
-                        {this.props.products ? products.map((product, id) =>
+                        {products ? Object.values(products).map((product, id) =>
                             <div className="row-with-button" key={id}>
-                                <Link to={`/product/${keys[id]}`}>
+                                <Link to={`/product/${Object.keys(products)[id]}`}>
                                     <div className="row">
                                         <div className="row-column">{product.name}</div>
                                         <div className="row-column">{product.number}</div>
                                         <div className="row-column-wide">
-                                        {Moment(product.availableSince).format(`MMM Do YYYY`)}
+                                            {moment(product.availableSince).format(`MMM Do YYYY`)}
                                         </div>
                                         <div className="row-column-wide">{product.manufacturer}</div>
                                         <div className="row-column">{product.origin}</div>
-                                        <div className="row-column-wide">{`${product.pricingFrom} - ${product.pricingTo}`}</div>
+                                        <div className="row-column-wide">
+                                            {`${product.pricingFrom} - ${product.pricingTo}`}
+                                        </div>
                                         <div className="row-column">{product.quantity}</div>
                                     </div>
                                 </Link>
-                                <button className="btn delete-btn" onClick={() => this.props.deleteProduct(keys[id])}>Delete</button>
-                            </div>)
-                        : <div className="no-products">No Products Listed</div>}
+                                <button
+                                    className="btn delete-btn"
+                                    onClick={() => deleteProduct(Object.keys(products)[id])}>
+                                    Delete
+                                </button>
+                            </div>) : <div className="no-products">No Products Listed</div>}
                     </div>
                 </> : null}
-
-                <Link to="/product">
-                    <button className="btn add-btn">Add New Product</button>
-                </Link>
-
-            </div>
-        )
-    }
+            <Link to="/product">
+                <button className="btn add-btn">Add New Product</button>
+            </Link>
+        </div>
+    )
 }
 
-const mapStateToProps = state => ({
-    products: state.products,
-    getting: state.getting
-})
-
-const mapDispatchToProps = dispatch => ({
-    getProducts: () => dispatch(getProducts()),
-    deleteProduct: id => dispatch(deleteProduct(id))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserList)
+export default DataTable
