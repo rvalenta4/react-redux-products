@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import './DataTable.css'
+import './DataTable.scss'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { API } from '../api'

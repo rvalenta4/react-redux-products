@@ -1,0 +1,66 @@
+.table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 75rem;
+    .table-title {
+        margin: 2rem 3.25rem 2rem 0;
+        font-weight: bold;
+        font-size: 2rem;
+    }
+    button:focus {
+        outline: 0;
+    }
+    .btn {
+        cursor: pointer;
+        height: 2rem;
+        border: none;
+        border-radius: 0.3rem;
+        color: white;
+        font-weight: bold;
+    }
+    .delete-btn {
+        margin: 0 0 0 1rem;
+        background-color: #f34573;
+    }
+    .add-btn {
+        margin: 0;
+        background-color: #6b8c42;
+    }
+    .row-with-button {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+    .row {
+        display: inline-flex;
+        border: 2px solid #000;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+    a {
+        margin: 1rem 3.25rem 0 0;
+    }
+    .rows { 
+        a {
+            text-decoration: none;
+            color: #000;
+            margin: 1rem 0;
+        }
+    }
+    .header {
+        display: inline-flex;
+        padding: 0.5rem;
+        margin-right: 4.2rem;
+    }
+    .row-column, .header-column {
+        min-width: 8rem;
+    }
+    .row-column-wide, .header-column-wide {
+        min-width: 10rem;
+    }
+    .header-column, .header-column-wide {
+        font-weight: bold;
+    }
+}
