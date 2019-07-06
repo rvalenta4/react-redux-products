@@ -13,7 +13,6 @@ import {
 } from '../redux/constants'
 
 const ProductForm = props => {
-
     const { id } = props.match.params
     const dispatch = useDispatch()
 
@@ -22,8 +21,8 @@ const ProductForm = props => {
             dispatch({ type: GET_PRODUCT_STARTED })
             try {
                 const { data: product } = await axios.get(`${API}/${id}.json`)
-                dispatch({ type: GET_PRODUCT_SUCCEEDED, product: product })
-            } catch (error) { dispatch({ type: GET_PRODUCT_FAILED, error: error }) }
+                dispatch({ type: GET_PRODUCT_SUCCEEDED, product })
+            } catch (error) { dispatch({ type: GET_PRODUCT_FAILED, error }) }
         }
         if (id) getProduct(id)
     }, [dispatch, id])
@@ -52,22 +51,22 @@ const ProductForm = props => {
         dispatch({ type: POST_PRODUCT_STARTED })
         try {
             const { data: { name: id } } = await axios.post(`${API}.json`, product)
-            dispatch({ type: POST_PRODUCT_SUCCEEDED, id: id, product: product })
-        } catch (error) { dispatch({ type: POST_PRODUCT_FAILED, error: error }) }
+            dispatch({ type: POST_PRODUCT_SUCCEEDED, id, product })
+        } catch (error) { dispatch({ type: POST_PRODUCT_FAILED, error }) }
     }
 
     const putProduct = async (id, product) => {
         dispatch({ type: PUT_PRODUCT_STARTED })
         try {
             await axios.put(`${API}/${id}.json`, product)
-            dispatch({ type: PUT_PRODUCT_SUCCEEDED, id: id, product: product })
-        } catch (error) { dispatch({ type: PUT_PRODUCT_FAILED, error: error }) }
+            dispatch({ type: PUT_PRODUCT_SUCCEEDED, id, product })
+        } catch (error) { dispatch({ type: PUT_PRODUCT_FAILED, error }) }
     }
 
     return (
         <div className="form">
             <h1>{id ? 'Edit Product Info' : 'Add New Product'}</h1>
-            {!getting && Object.keys(product).length > 0 ?
+            {(!getting && Object.keys(product).length > 0) || !id ?
                 <Formik
                     initialValues={initialValues}
                     validationSchema={ValidationSchema}
@@ -82,7 +81,6 @@ const ProductForm = props => {
                                 props.history.push("/")
                             })
                     }}>
-
                     {({ isSubmitting }) => (
                         <Form className="formik-form">
                             <h3>Basic Info</h3>

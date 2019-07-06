@@ -19,8 +19,8 @@ const DataTable = () => {
             dispatch({ type: GET_PRODUCTS_STARTED })
             try {
                 const { data: products } = await axios.get(`${API}.json`)
-                dispatch({ type: GET_PRODUCTS_SUCCEEDED, products: products })
-            } catch (error) { dispatch({ type: GET_PRODUCTS_FAILED, error: error }) }
+                dispatch({ type: GET_PRODUCTS_SUCCEEDED, products })
+            } catch (error) { dispatch({ type: GET_PRODUCTS_FAILED, error }) }
         }
         getProducts()
     }, [dispatch])
@@ -29,8 +29,8 @@ const DataTable = () => {
         dispatch({ type: DELETE_PRODUCT_STARTED })
         try {
             await axios.delete(`${API}/${deleted}.json`)
-            dispatch({ type: DELETE_PRODUCT_SUCCEEDED, deleted: deleted })
-        } catch (error) { dispatch({ type: DELETE_PRODUCT_FAILED, error: error }) }
+            dispatch({ type: DELETE_PRODUCT_SUCCEEDED, deleted })
+        } catch (error) { dispatch({ type: DELETE_PRODUCT_FAILED, error }) }
     }
 
     return (
